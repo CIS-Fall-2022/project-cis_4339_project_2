@@ -92,4 +92,20 @@ router.put("/:id", (req, res, next) => {
     );
 });
 
+router.delete('/:id', (req, res, next) => {
+    
+    primarydata.findOneAndRemove({ _id: req.params.id}, 
+        req.body,
+        (error, data) => {
+        if (error) {
+          return next(error);
+        } else {
+           res.status(200).json({
+             msg: data
+           });
+          
+        }
+      });
+});
+
 module.exports = router;
