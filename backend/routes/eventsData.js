@@ -93,6 +93,38 @@ router.put("/:id", (req, res, next) => {
         }
     );
 });
+//Delete functionality
+router.delete('/:id', (req, res, next) => {
+    
+    eventdata.findOneAndRemove({ _id: req.params.id},
+        req.body,
+        (error, data) => {
+        if (error) {
+          return next(error);
+        } else {
+           res.status(200).json({
+             msg: data
+           });
+          res.send('Event is deleted');
+        }
+      });
+});
+
+//GET the total number of events for the graph
+router.get('/total/:eventName', (req, res, next) => {
+    eventdata.aggregate([
+        { $match: { eventName: req.params.eventName } },
+        { $project: { _id: 0, eventName: 1, attendees: 1 } },
+        { $group: { _id: "$attendees" } }, //only distinct
+        { $count: "total" }
+    ], (error, data) => {
+        if (error) {
+            return next(error)
+        } else {
+            res.json(data);
+        }
+    });
+});
 
 //PUT add attendee to event
 router.put("/addAttendee/:id", (req, res, next) => {
@@ -123,5 +155,6 @@ router.put("/addAttendee/:id", (req, res, next) => {
     );
     
 });
+
 
 module.exports = router;
