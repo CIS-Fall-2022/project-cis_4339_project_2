@@ -57,7 +57,16 @@ router.get("/search/", (req, res, next) => {
 
 //GET events for a single client
 router.get("/events/:id", (req, res, next) => { 
-    
+    eventdata.find( 
+        { attendees: req.params.id }, 
+        (error, data) => { 
+            if (error) {
+                return next(error);
+            } else {
+                res.json(data);
+            }
+        }
+    );
 });
 
 //POST
@@ -90,6 +99,23 @@ router.put("/:id", (req, res, next) => {
             }
         }
     );
+});
+
+//Delete functionality 
+router.delete('/:id', (req, res, next) => {
+    
+    primarydata.findOneAndRemove({ _id: req.params.id}, 
+        req.body,
+        (error, data) => {
+        if (error) {
+          return next(error);
+        } else {
+           res.status(200).json({
+             msg: data
+           });
+          
+        }
+      });
 });
 
 module.exports = router;
