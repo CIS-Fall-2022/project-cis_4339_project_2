@@ -111,12 +111,13 @@ router.delete('/:id', (req, res, next) => {
 });
 
 //GET the total number of events for the graph
-router.get('/total/:eventName', (req, res, next) => {
+router.get('/total/clientnumber', (req, res, next) => {
     eventdata.aggregate([
-        { $match: { eventName: req.params.eventName } },
-        { $project: { _id: 0, eventName: 1, attendees: 1 } },
-        { $group: { _id: "$attendees" } }, //only distinct
-        { $count: "total" }
+        { $unwind: "$attendees" },
+        { $group: { _id: {_id: "$_id", eventName: "$eventName", date: "$date"},  
+                   count: {$sum: 1 }
+                  }
+        },
     ], (error, data) => {
         if (error) {
             return next(error)
