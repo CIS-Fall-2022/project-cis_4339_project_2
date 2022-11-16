@@ -20,7 +20,8 @@ let primaryDataSchema = new Schema({
         type: String
     },
     organization: {
-        type: String
+        type: Number,
+        ref: 'orgData'
     },
     phoneNumbers: {
         type: Array,
@@ -50,35 +51,10 @@ let primaryDataSchema = new Schema({
 });
 
 let orgDataSchema = new Schema({
-    _id: { type: String, default: uuid.v1 },
-    orgname: {
+    _id: { type: Number },
+    organization: {
         type: String,
         require: true
-    },
-    email: {
-        type: String
-    },
-    phoneNumbers: {
-        type: Array,
-        required: true
-    },
-    address: {
-        line1: {
-            type: String
-        },
-        line2: {
-            type: String,
-        },
-        city: {
-            type: String,
-            required: true
-        },
-        county: {
-            type: String,
-        },
-        zip: {
-            type: String,
-        }
     }
 }, {
     collection: 'orgData',
@@ -93,9 +69,10 @@ let eventDataSchema = new Schema({
         require: true,
         unique:true
     },
-    organization: [{
-        type: String
-    }],
+    organization: {
+        type: Number,
+        ref: 'orgData'
+    },
     services: {
         type: Array
     },
