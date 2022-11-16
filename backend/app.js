@@ -24,8 +24,22 @@ mongoose
   });
 
 //declare port number for the api
-const PORT = process.env.PORT || 3000;
-
+if (process.env.ORGANIZATION==1){
+  const PORT = process.env.PORTA;
+  app.listen(PORT, () => {
+    console.log("Server started listening on port : ", PORT);
+  });}
+else if (process.env.ORGANIZATION==2){
+  const PORT = process.env.PORTB;
+  app.listen(PORT, () => {
+    console.log("Server started listening on port : ", PORT);
+  });
+} else{ (process.env.ORGANIZATION==3)
+  const PORT = process.env.PORTC
+  app.listen(PORT, () => {
+    console.log("Server started listening on port : ", PORT);
+  });
+};
 //setup
 app.use(express.json());
 app.use(morgan("dev"));
@@ -39,9 +53,6 @@ app.use('/primaryData', primaryDataRoute);
 app.use('/eventData', eventsDataRoute);
 app.use('/orgData', orgDataRoute);
 
-app.listen(PORT, () => {
-  console.log("Server started listening on port : ", PORT);
-});
 
 //error handler
 app.use(function (err, req, res, next) {
