@@ -7,7 +7,7 @@ let { eventdata } = require("../models/models");
 
 //GET all entries
 router.get("/", (req, res, next) => { 
-    primarydata.find( 
+    primarydata.find( {organization: process.env.ORGANIZATION},
         (error, data) => {
             if (error) {
                 return next(error);
