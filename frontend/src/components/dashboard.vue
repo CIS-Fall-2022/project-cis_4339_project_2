@@ -109,7 +109,7 @@ export default {
       try {
         this.error = null;
         this.loading = true;
-        const url = `http://localhost:3000/eventData/total/clientnumber`;
+        const url = import.meta.env.VITE_ROOT_API + `/eventdata/total/clientnumber`;
         const response = await axios.get(url);
         //"re-organizing" - mapping json from the response
         this.labels = response.data.map((item) => item._id.eventName);
