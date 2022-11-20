@@ -25,7 +25,7 @@ router.get("/id/:id", (req, res, next) => {
     orgData.find( 
         { id: req.params.id }, 
         (error, data) => {
-            if (req.params.id = orgID) { //to retrieve only the ones that matches the organization youre using
+            if (req.params.id = process.env.ORGANIZATION) { //to retrieve only the ones that matches the organization youre using
                     res.json(data);
                 } else {
                     return next(error)
