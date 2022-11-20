@@ -21,7 +21,7 @@
           <tbody class="divide-y divide-gray-300">
             <tr @click="editClient(total._id)" v-for="total in eventData" :key="total._id">
               <td class="p-2 text-left">{{ total._id.eventName }}</td>
-              <td class="p-2 text-left">{{ total._id.date }}</td>
+              <td class="p-2 text-left">{{ formattedDate(total._id.date) }}</td>
               <td class="p-2 text-center">{{ total.count }}</td>
             </tr>
           </tbody>
@@ -77,6 +77,7 @@
 <script>
   import axios from "axios";
   import TotalBar from "@/components/BarChartComponent.vue";
+  import { DateTime } from "luxon";
 
 export default {
   components: {
@@ -141,7 +142,9 @@ export default {
     routePush(routeName) {
       this.$router.push({ name: routeName });
     },
-    
+    formattedDate(datetimeDB) {
+      return DateTime.fromISO(datetimeDB).plus({ days: 1 }).toLocaleString();
+    },
   },
 };
 </script>
