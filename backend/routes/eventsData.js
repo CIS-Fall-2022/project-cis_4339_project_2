@@ -110,6 +110,34 @@ router.delete('/:id', (req, res, next) => {
       });
 });
 
+//Delete attendee 
+router.put("/removeattendee/:id", (req, res, next) => {
+    //using the same idea from PUT
+    eventdata.find( 
+        { _id: req.params.id, attendees: req.body.attendee }, //finds the attendee in specific event
+        (error) => { 
+            if (error) { //if no attendee found, error is returned
+                return next(error);
+            } else {
+                    eventdata.updateOne( //use update instead of delete cause we are just updating the table, not deleting the attendee
+                        { _id: req.params.id }, 
+                        { $pull: {attendees: req.body.attendee }} , //use pull to remove the attendee from list
+                        (error, data) => {
+                            if (error) {
+                                consol
+                                return next(error);
+                            }
+                             else {
+                                res.json(data);
+                            }
+                        }
+                    );
+                
+            }
+        
+        });
+});
+
 //GET the total number of events for the graph
 router.get('/total/clientnumber', (req, res, next) => {
     eventdata.aggregate([
