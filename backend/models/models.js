@@ -55,7 +55,7 @@ let primaryDataSchema = new Schema({
 
 let orgDataSchema = new Schema({
     _id: { type: String, default: uuid.v1 }, //created unique id
-    id: { type: Number}, //id use in the env file
+    orgID: { type: Number}, //id use in the env file
     organization: {
         type: String,
         require: true
