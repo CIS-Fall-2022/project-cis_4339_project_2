@@ -39,6 +39,7 @@ export default {
       },
       // list of events shown in table
       clientEvents: [],
+      errors: [], //empty error array to add error messages
     };
   },
   mounted() {
@@ -100,6 +101,7 @@ export default {
       axios.put(apiURL, this.client).then(() => {
         alert("Update has been saved.");
         this.$router.back().catch((error) => {
+          this.errors.push("ERROR: " + error.response.data) //error handling
           console.log(error);
         });
       });
@@ -122,10 +124,37 @@ export default {
                   eventName: data[i].eventName,
                 });
               }
-            });
+            })
+            //error handling
+            alert("Added to Event.")
+            this.$router.back().catch((error) => {
+              if (error.response.data.includes("E1100")) { //duplicate attendees error since there is a restriction
+                this.errors.push("Already in Event")
+              }
+              else {
+                this.errors.push("ERROR: " + error.response.data) //all other types of error messages
+                console.log(error);
+              } 
+          }
         });
       });
     },
+    //Delete Client
+    deleteClient() {
+    this.eventData.forEach((event) => {
+      let apiURL = import.meta.env.VITE_ROOT_API + `eventdata/removeattendee/` + event._id;
+      axios.put(apiURL, { attendee: this.id}) //once the client is deleted, it will remove it from events as well
+    }
+    )
+    let apiURL = import.meta.env.VITE_ROOT_API + `/primarydata/${this.id}`;
+      axios.delete(apiURL, this.client).then(() => { //deletes the client from primarydata
+        alert("Client Deleted");
+        this.$router.back().catch((error) => {
+          this.errors.push("ERROR: " + error.response.data) //error handling
+          console.log(error);
+        });
+      });
+  }
   },
   validations() {
     return {
@@ -334,6 +363,13 @@ export default {
           </div>
           <div class="flex justify-between mt-10 mr-20">
             <button
+              @click="deleteClient"
+              type="submit"
+              class="bg-red-700 text-white rounded"
+            >Delete Client</button>
+          </div>
+          <div class="flex justify-between mt-10 mr-20">
+            <button
               type="reset"
               class="border border-red-700 bg-white text-red-700 rounded"
               @click="$router.go(-1)"
@@ -380,6 +416,12 @@ export default {
                 class="mt-5 bg-red-700 text-white rounded"
               >Add Client to Events</button>
             </div>
+            <span class="text-black" v-if="errors">
+                <p
+                  class="text-red-700"
+                  v-for="error of errors"
+                >{{ error }}!</p>
+              </span>
           </div>
         </div>
       </form>
