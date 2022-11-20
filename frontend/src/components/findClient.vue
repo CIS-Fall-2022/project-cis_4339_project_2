@@ -151,8 +151,9 @@ export default {
       axios.get(apiURL).then((resp) => {
         this.queryData = resp.data;
       })
+      //error handling
       .catch((error) => {
-            this.errors.push("ERROR: " + error.response.data)
+            this.errors.push("ERROR: " + error.response.data) //allows error message to pop up in front end
             console.log(error);
           }
         );
