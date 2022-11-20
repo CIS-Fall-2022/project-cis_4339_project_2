@@ -135,7 +135,7 @@ export default {
                 this.errors.push("ERROR: " + error.response.data) //all other types of error messages
                 console.log(error);
               } 
-          }
+          })
         });
       });
     },
