@@ -91,6 +91,12 @@
             </tr>
           </tbody>
         </table>
+        <span class="text-black" v-if="errors">
+                <p
+                  class="text-red-700"
+                  v-for="error of errors"
+                >{{ error }}!</p>
+        </span>
       </div>
     </div>
   </main>
@@ -102,6 +108,7 @@ export default {
   data() {
     return {
       queryData: [],
+      errors: [], //empty error array for messages to be added
       //Parameter for search to occur
       searchBy: "",
       firstName: "",
@@ -143,7 +150,12 @@ export default {
       let apiURL = import.meta.env.VITE_ROOT_API + `/primarydata/`;
       axios.get(apiURL).then((resp) => {
         this.queryData = resp.data;
-      });
+      })
+      .catch((error) => {
+            this.errors.push("ERROR: " + error.response.data)
+            console.log(error);
+          }
+        );
     },
     editClient(clientID) {
       this.$router.push({ name: "updateclient", params: { id: clientID } });
