@@ -11,6 +11,7 @@ export default {
   },
   data() {
     return {
+      errors: [], //empty error array to add messages later
       client: {
         firstName: "",
         middleName: "",
@@ -64,9 +65,17 @@ export default {
               },
             };
           })
+          //error handling
           .catch((error) => {
+            if (error.response.data.includes("E11000")) {
+            this.errors.push("ERROR: Phone Number already exists") //duplicate error message added since there is a phone number restriction
             console.log(error);
-          });
+          }
+          else {
+            this.errors.push("ERROR: " + error.response.data) //all other types of error messages added
+            console.log(error);
+          }
+        });
       }
     },
   },
@@ -279,6 +288,12 @@ export default {
           <div class="flex justify-between mt-10 mr-20">
             <button class="bg-red-700 text-white rounded" type="submit">Add Client</button>
           </div>
+          <span class="text-black" v-if="errors">
+                <p
+                  class="text-red-700"
+                  v-for="error of errors"
+                >{{ error}}!</p>
+              </span>
         </div>
       </form>
     </div>
