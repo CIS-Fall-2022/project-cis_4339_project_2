@@ -67,7 +67,7 @@ export default {
   data(){
     return {
       ORG_NAME: '',
-      id: '1'
+      id: import.meta.env.VITE_ORGANIZATION
     }
   },
   created() {
