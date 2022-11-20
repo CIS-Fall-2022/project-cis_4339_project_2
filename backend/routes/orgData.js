@@ -23,7 +23,7 @@ router.get("/", (req, res, next) => {
 //this is used for the name apperance on the frontend
 router.get("/id/:id", (req, res, next) => {
     orgData.find( 
-        { id: req.params.id }, 
+        { _id: req.params.id }, 
         (error, data) => {
             if (req.params.id = process.env.ORGANIZATION) { //to retrieve only the ones that matches the organization youre using
                     res.json(data);
