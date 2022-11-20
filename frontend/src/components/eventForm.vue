@@ -193,6 +193,12 @@
         <div class="flex justify-between mt-10 mr-20">
           <button class="bg-red-700 text-white rounded" type="submit">Add New Event</button>
         </div>
+        <span class="text-black" v-if="errors">
+                <p
+                  class="text-red-700"
+                  v-for="error of errors"
+                >{{ error }}!</p>
+              </span>
       </form>
     </div>
   </main>
@@ -208,6 +214,7 @@ export default {
   data() {
     return {
       checkedServices: [],
+      errors: [], //empty error array to add error messages later
       event: {
         eventName: "",
         services: [],
@@ -251,9 +258,17 @@ export default {
             };
             this.checkedServices = [];
           })
+          //error handling
           .catch((error) => {
+            if (error.response.data.includes("E11000")) { //if there are duplicate names, error message will pop up.
+            this.errors.push("ERROR: Event Name already exists")
             console.log(error);
-          });
+          }
+          else {
+            this.errors.push("ERROR: " + error.response.data) //all other types of error messages
+            console.log(error);
+          }
+        });
       }
     },
   },
