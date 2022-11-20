@@ -25,7 +25,8 @@ let primaryDataSchema = new Schema({
     },
     phoneNumbers: {
         type: Array,
-        required: true
+        required: true,
+        unique: true //makes every client distinct
     },
     address: {
         line1: {
@@ -66,8 +67,7 @@ let eventDataSchema = new Schema({
     _id: { type: String, default: uuid.v1 },
     eventName: {
         type: String,
-        require: true,
-        unique:true
+        require: true
     },
     organization: {
         type: Number,
@@ -101,7 +101,8 @@ let eventDataSchema = new Schema({
         type: String,
     },
     attendees: [{
-        type: String
+        type: String,
+        unique: true //prevent same attendee from added to the events again
     }]
 }, {
     collection: 'eventData'
