@@ -198,6 +198,13 @@
           </div>
           <div class="flex justify-between mt-10 mr-20">
             <button
+              @click="deleteEvent"
+              type="submit"
+              class="bg-red-700 text-white rounded"
+            >Delete Event</button>
+          </div>
+          <div class="flex justify-between mt-10 mr-20">
+            <button
               type="reset"
               class="border border-red-700 bg-white text-red-700 rounded"
               @click="$router.go(-1)"
@@ -233,9 +240,22 @@
                   >{{ client.attendeeFirstName + " " + client.attendeeLastName }}</td>
                   <td class="p-2 text-left">{{ client.attendeeCity }}</td>
                   <td class="p-2 text-left">{{ client.attendeePhoneNumber }}</td>
+                  <td class="p-2 text-left">
+                    <button
+                      @click="deleteAttendee(client.attendeeID)"
+                      type="submit"
+                      class="bg-red-700 text-white rounded"
+                    >Remove Attendee</button>
+                  </td>
                 </tr>
               </tbody>
             </table>
+            <span class="text-black" v-if="errors"> 
+                <p
+                  class="text-red-700"
+                  v-for="error of errors"
+                >{{ error}}!</p>
+              </span>
           </div>
         </div>
       </form>
@@ -256,6 +276,7 @@ export default {
   data() {
     return {
       attendeeIDs: [],
+      errors: [], //empty error array to add error messages
       attendeeData: [],
       checkedServices: [],
       event: {
@@ -316,6 +337,7 @@ export default {
       axios.put(apiURL, this.event).then(() => {
         alert("Update has been saved.");
         this.$router.back().catch((error) => {
+          this.errors.push("ERROR: " + error.response.data) //error handling to pop up on the front end
           console.log(error);
         });
       });
@@ -323,6 +345,28 @@ export default {
     editClient(clientID) {
       this.$router.push({ name: "updateclient", params: { id: clientID } });
     },
+    //Delete button
+    deleteEvent(){
+    let apiURL = import.meta.env.VITE_ROOT_API + `/eventdata/${this.id}`; 
+      axios.delete(apiURL, this.event.attendeeID).then(() => { //use axios.delete to delete event
+        alert("Event Deleted");
+        this.$router.back().catch((error) => {
+          this.errors.push("ERROR: " + error.response.data) //adds message to the frontend
+          console.log(error);
+        });
+      });
+    },
+    //Remove Attendee button
+    deleteAttendee(clientID){
+      let apiURL = import.meta.env.VITE_ROOT_API + `/eventdata/removeattendee/${this.id}`;
+      axios.put(apiURL, {attendee : clientID}).then(() => { //use axios.put to remove attendee from list and updates table
+          alert("Attendee Removed");
+          this.$router.back().catch((error) => {
+            this.errors.push("ERROR: " + error.response.data) //adds message to the frontend
+            console.log(error);
+          });
+        });
+    }
   },
   // sets validations for the various data properties
   validations() {
