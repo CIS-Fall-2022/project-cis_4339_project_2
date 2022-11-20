@@ -8,7 +8,7 @@ let { primarydata } = require("../models/models");
 
 //GET all entries
 router.get("/", (req, res, next) => { 
-    orgData.find( 
+    orgData.find( {organization: process.env.ORGANIZATION},
         (error, data) => {
             if (error) {
                 return next(error);
