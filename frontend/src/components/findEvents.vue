@@ -79,6 +79,12 @@
             </tr>
           </tbody>
         </table>
+        <span class="text-black" v-if="errors">
+                <p
+                  class="text-red-700"
+                  v-for="error of errors"
+                >{{ error }}!</p>
+         </span>
       </div>
     </div>
   </main>
@@ -91,6 +97,7 @@ export default {
   data() {
     return {
       queryData: [],
+      erros: [], //empty error array for messages to be added
       //Parameter for search to occur
       searchBy: "",
       eventName: "",
@@ -135,7 +142,13 @@ export default {
       this.queryData = [];
       axios.get(apiURL).then((resp) => {
         this.queryData = resp.data;
-      });
+      })
+      //error handling 
+      .catch((error) => {
+            this.errors.push("ERROR: " + error.response.data) //adds error messages to the frontend
+            console.log(error);
+          }
+        );
     },
     editEvent(eventID) {
       this.$router.push({ name: "eventdetails", params: { id: eventID } });
