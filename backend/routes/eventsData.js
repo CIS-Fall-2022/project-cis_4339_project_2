@@ -124,7 +124,6 @@ router.put("/removeattendee/:id", (req, res, next) => {
                         { $pull: {attendees: req.body.attendee }} , //use pull to remove the attendee from list
                         (error, data) => {
                             if (error) {
-                                consol
                                 return next(error);
                             }
                              else {
@@ -170,7 +169,6 @@ router.put("/addAttendee/:id", (req, res, next) => {
                         { $push: { attendees: req.body.attendee } },
                         (error, data) => {
                             if (error) {
-                                consol
                                 return next(error);
                             } else {
                                 res.json(data);
