@@ -20,15 +20,16 @@ router.get("/", (req, res, next) => {
 });
 
 //GET single entry by ID
+//this is used for the name apperance on the frontend
 router.get("/id/:id", (req, res, next) => {
     orgData.find( 
-        { _id: req.params.id }, 
+        { id: req.params.id }, 
         (error, data) => {
-            if (error) {
-                return next(error);
-            } else {
-                res.json(data);
-            }
+            if (req.params.id = orgID) { //to retrieve only the ones that matches the organization youre using
+                    res.json(data);
+                } else {
+                    return next(error)
+                }
         }
     );
 });
