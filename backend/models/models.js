@@ -101,8 +101,7 @@ let eventDataSchema = new Schema({
         type: String,
     },
     attendees: [{
-        type: String,
-        unique: true //prevent same attendee from added to the events again
+        type: String
     }]
 }, {
     collection: 'eventData'
