@@ -48,7 +48,7 @@
           background: linear-gradient(250deg, #C8102E 70%, #efecec 50.6%);
         "
       >
-        <h1 class="mr-20 text-3xl text-white" v-for="org in ORG_NAME" :key="org.organizations">
+        <h1 class="mr-20 text-3xl text-white" v-for="org in ORG_NAME" :key="org.organization">
             {{org.organization}}
         </h1>
       </section>
