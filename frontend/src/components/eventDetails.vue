@@ -348,7 +348,7 @@ export default {
     //Delete button
     deleteEvent(){
     let apiURL = import.meta.env.VITE_ROOT_API + `/eventdata/${this.id}`; 
-      axios.delete(apiURL, this.event.attendeeID).then(() => { //use axios.delete to delete event
+      axios.delete(apiURL, this.event).then(() => { //use axios.delete to delete event
         alert("Event Deleted");
         this.$router.back().catch((error) => {
           this.errors.push("ERROR: " + error.response.data) //adds message to the frontend
